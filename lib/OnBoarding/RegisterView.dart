@@ -2,19 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:minimal/CustomWidgets/CustomButton.dart';
 import 'package:minimal/CustomWidgets/CustomTextField.dart';
 
-class RegisterView extends StatelessWidget {
+class RegisterView extends StatefulWidget {
   final void Function()? onTap;
 
-  RegisterView({super.key, required this.onTap});
+  RegisterView({Key? key, required this.onTap});
 
+  @override
+  _RegisterViewState createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
   // text controllers
-  final TextEditingController tecUsername=TextEditingController();
-  final TextEditingController tecEmail=TextEditingController();
-  final TextEditingController tecPasswd=TextEditingController();
-  final TextEditingController tecConfirmPasswd=TextEditingController();
+  final TextEditingController tecUsername = TextEditingController();
+  final TextEditingController tecEmail = TextEditingController();
+  final TextEditingController tecPasswd = TextEditingController();
+  final TextEditingController tecConfirmPasswd = TextEditingController();
+
+  // password visibility
+  bool isPasswordVisible = false;
 
   // register method
-  void register(){}
+  void register() {}
 
   @override
   Widget build(BuildContext context) {
@@ -38,43 +46,56 @@ class RegisterView extends StatelessWidget {
 
                 // app name
                 Text(
-                  "M I N I M A L", style: TextStyle(fontSize: 20),
+                  "M I N I M A L",
+                  style: TextStyle(fontSize: 20),
                 ),
 
                 const SizedBox(height: 50),
 
                 // username textfield
                 CustomTextField(
-                    sHint: "Username",
-                    blIsPasswd: false,
-                    tecControler: tecUsername
+                  sHint: "Username",
+                  blIsPasswd: false,
+                  tecControler: tecUsername,
                 ),
 
                 const SizedBox(height: 10),
 
                 // email textfield
                 CustomTextField(
-                    sHint: "Email",
-                    blIsPasswd: false,
-                    tecControler: tecEmail
+                  sHint: "Email",
+                  blIsPasswd: false,
+                  tecControler: tecEmail,
                 ),
 
                 const SizedBox(height: 10),
 
                 // password textfield
                 CustomTextField(
-                    sHint: "Password",
-                    blIsPasswd: true,
-                    tecControler: tecPasswd
+                  sHint: "Password",
+                  blIsPasswd: !isPasswordVisible,
+                  tecControler: tecPasswd,
+                  iconButton: IconButton(
+                    icon: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isPasswordVisible = !isPasswordVisible;
+                      });
+                    },
+                  ),
                 ),
 
                 const SizedBox(height: 10),
 
                 // confirm password textfield
                 CustomTextField(
-                    sHint: "Confirm Password",
-                    blIsPasswd: true,
-                    tecControler: tecConfirmPasswd
+                  sHint: "Confirm Password",
+                  blIsPasswd: true,
+                  tecControler: tecConfirmPasswd,
                 ),
 
                 const SizedBox(height: 10),
@@ -90,10 +111,7 @@ class RegisterView extends StatelessWidget {
                 const SizedBox(height: 25),
 
                 // register button
-                CustomButton(
-                    sText: "Register",
-                    onTap: register
-                ),
+                CustomButton(sText: "Register", onTap: register),
 
                 const SizedBox(height: 25),
 
@@ -102,16 +120,17 @@ class RegisterView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                        "Already have an account?",
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.inversePrimary)
+                      "Already have an account?",
+                      style: TextStyle(
+                        color:
+                        Theme.of(context).colorScheme.inversePrimary,
+                      ),
                     ),
                     GestureDetector(
-                      onTap: onTap,
+                      onTap: widget.onTap,
                       child: Text(
                         " Login here",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     )
                   ],
